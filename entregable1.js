@@ -19,7 +19,6 @@
 
 //! Formato del entregable
     //* Archivo de Javascript listo para ejecutarse desde node.
-
     class ProductManager {
         #products
     
@@ -29,38 +28,29 @@
     
         static id = 0;
     
-        #isCodeDuplicated(code) {
-            const productCode = this.#products.some(product => product.code === code);
-            if(productCode) {
-                console.log(`Code ${code} already exists, please verify.`);
-                return true;
-            }
-            return false;
-        }
-    
-        #isFieldEmpty(title, description, price, thumbnail, code, stock) {
-            const noEmptyField = !title || !description || !price || !thumbnail || !code || !stock
-            if(noEmptyField) {
-                console.log('All fields are required, please verify.');
-                return true;
-            }
-            return false;
-        }
-    
         addProduct(title, description, price, thumbnail, code, stock) {
-            if(!this.#isCodeDuplicated(code) && !this.#isFieldEmpty(title, description, price, thumbnail, code, stock)) {
-                ProductManager.id++;
-                const product = {
-                    id: ProductManager.id,
-                    title, 
-                    description, 
-                    price,
-                    thumbnail, 
-                    code, 
-                    stock
-                }
-                this.#products.push(product);
+
+            if(!title || !description || !price || !thumbnail || !code || !stock) {
+                console.log('All fields are required, please verify.');
+                return false;
             }
+
+            if(this.#products.some(product => product.code === code)) {
+                console.log(`Code ${code} already exists, please verify.`);
+                return false;
+            }
+
+            ProductManager.id++;
+            const product = {
+                id: ProductManager.id,
+                title, 
+                description, 
+                price,
+                thumbnail, 
+                code, 
+                stock
+            }
+            this.#products.push(product);
         }
     
         getProducts() {
